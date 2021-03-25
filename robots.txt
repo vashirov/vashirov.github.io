@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://vashirov.blog/sitemap.xml

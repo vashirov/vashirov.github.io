@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Viktor&#39;s blog</title>
+    <link>https://vashirov.blog/</link>
+    <description>Recent content on Viktor&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Jan 1970 00:00:00 +0000</lastBuildDate><atom:link href="https://vashirov.blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello World!</title>
+      <link>https://vashirov.blog/1970/01/01/hello-world/</link>
+      <pubDate>Thu, 01 Jan 1970 00:00:00 +0000</pubDate>
+      
+      <guid>https://vashirov.blog/1970/01/01/hello-world/</guid>
+      <description>👋 </description>
+    </item>
+    
+    <item>
+      <title>Archives</title>
+      <link>https://vashirov.blog/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://vashirov.blog/archives/</guid>
+      <description>archives</description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>https://vashirov.blog/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://vashirov.blog/search/</guid>
+      <description>search</description>
+    </item>
+    
+  </channel>
+</rss>

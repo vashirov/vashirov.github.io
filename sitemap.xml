@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://vashirov.blog/1970/01/01/hello-world/</loc>
+    <lastmod>1970-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/posts/</loc>
+    <lastmod>1970-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/</loc>
+    <lastmod>1970-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/archives/</loc>
+  </url><url>
+    <loc>https://vashirov.blog/categories/</loc>
+  </url><url>
+    <loc>https://vashirov.blog/search/</loc>
+  </url><url>
+    <loc>https://vashirov.blog/tags/</loc>
+  </url>
+</urlset>
