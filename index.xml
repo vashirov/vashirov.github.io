@@ -6,7 +6,17 @@
     <description>Recent content on Viktor&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 10 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://vashirov.blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 Oct 2021 16:11:53 +0200</lastBuildDate><atom:link href="https://vashirov.blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Installing Let’s Encrypt certificates in OpenShift</title>
+      <link>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</link>
+      <pubDate>Mon, 04 Oct 2021 16:11:53 +0200</pubDate>
+      
+      <guid>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</guid>
+      <description>Introduction At my homelab I deploy and destroy OpenShift clusters several times a day. One of the most annoying things for me is accessing OpenShift console when it doesn&amp;rsquo;t have proper certificates installed: browser warns about self-signed certificates and makes me do several clicks first in order to access the UI. And of course, in real-life deployments you have to use proper certificates to secure routes and API endpoints.
+These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsquo;s Encrypt or similar services.</description>
+    </item>
+    
     <item>
       <title>How to enable shell auto completion for OpenShift `oc` command</title>
       <link>https://vashirov.blog/2021/04/10/how-to-enable-shell-auto-completion-for-openshift-oc-command/</link>
