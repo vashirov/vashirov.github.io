@@ -76,6 +76,18 @@
 </header>
 <article class=post-entry>
 <header class=entry-header>
+<h2>Running Pi-hole in a rootless container using podman
+</h2>
+</header>
+<section class=entry-content>
+<p>Introduction Pi-hole is a network-wide advertisement and tracker blocker. It’s a DNS sinkhole for your home network. I’ve been running it for several years now on my Raspberry Pi 3. Recently my SD card died and I didn’t have a replacement at hand. So I decided to move Pi-hole to my fanless Intel NUC that I already use to host several services in my home network.
+Here’s my log of configuring it with all the problems that I encountered along the way....</p>
+</section>
+<footer class=entry-footer>October 8, 2021&nbsp;·&nbsp;11 min&nbsp;·&nbsp;Viktor Ashirov</footer>
+<a class=entry-link aria-label="post link to Running Pi-hole in a rootless container using podman" href=https://vashirov.blog/2021/10/08/running-pi-hole-in-a-rootless-container-using-podman/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>Installing Let’s Encrypt certificates in OpenShift
 </h2>
 </header>
@@ -94,7 +106,7 @@ These days it’s easy to obtain free TLS certificates using Let’s Encrypt or 
 <section class=entry-content>
 <p>I was pleasantly surprised to find out that oc (and kubectl too) has a built-in capability to generate shell auto completion.
 For Zsh add the following snippet to your ~/.zshrc:
-if [ $commands[oc] ]; then source &lt;(oc completion zsh) fi For Bash add this to ~/.bashrc
+if [ $commands[oc] ]; then source &lt;(oc completion zsh) fi For Bash add this to ~/.bashrc:
 if command -v oc &>/dev/null; then source &lt;(oc completion bash) fi After opening a new shell:
 $ oc &lt;TAB> adm describe logout replace annotate diff logs rollback api-resources edit new-app rollout api-versions ex new-build rsh apply exec new-project rsync attach explain observe run auth expose options scale autoscale extract patch secrets cancel-build get plugin serviceaccounts cluster-info help policy set completion idle port-forward start-build config image process status cp import-image project tag create kustomize projects version debug label proxy wait delete login registry whoami </p>
 </section>

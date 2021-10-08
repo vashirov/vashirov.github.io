@@ -75,13 +75,25 @@
 </header>
 <article class="post-entry tag-entry">
 <header class=entry-header>
+<h2>Installing Let’s Encrypt certificates in OpenShift
+</h2>
+</header>
+<section class=entry-content>
+<p>Introduction At my homelab I deploy and destroy OpenShift clusters several times a day. One of the most annoying things for me is accessing OpenShift console when it doesn’t have proper certificates installed: browser warns about self-signed certificates and makes me do several clicks first in order to access the UI. And of course, in real-life deployments you have to use proper certificates to secure routes and API endpoints.
+These days it’s easy to obtain free TLS certificates using Let’s Encrypt or similar services....</p>
+</section>
+<footer class=entry-footer>October 4, 2021&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Viktor Ashirov</footer>
+<a class=entry-link aria-label="post link to Installing Let’s Encrypt certificates in OpenShift" href=https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/></a>
+</article>
+<article class="post-entry tag-entry">
+<header class=entry-header>
 <h2>How to enable shell auto completion for OpenShift `oc` command
 </h2>
 </header>
 <section class=entry-content>
 <p>I was pleasantly surprised to find out that oc (and kubectl too) has a built-in capability to generate shell auto completion.
 For Zsh add the following snippet to your ~/.zshrc:
-if [ $commands[oc] ]; then source &lt;(oc completion zsh) fi For Bash add this to ~/.bashrc
+if [ $commands[oc] ]; then source &lt;(oc completion zsh) fi For Bash add this to ~/.bashrc:
 if command -v oc &>/dev/null; then source &lt;(oc completion bash) fi After opening a new shell:
 $ oc &lt;TAB> adm describe logout replace annotate diff logs rollback api-resources edit new-app rollout api-versions ex new-build rsh apply exec new-project rsync attach explain observe run auth expose options scale autoscale extract patch secrets cancel-build get plugin serviceaccounts cluster-info help policy set completion idle port-forward start-build config image process status cp import-image project tag create kustomize projects version debug label proxy wait delete login registry whoami </p>
 </section>

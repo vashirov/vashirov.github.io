@@ -6,7 +6,17 @@
     <description>Recent content on Viktor&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Oct 2021 16:11:53 +0200</lastBuildDate><atom:link href="https://vashirov.blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Oct 2021 11:07:01 +0200</lastBuildDate><atom:link href="https://vashirov.blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running Pi-hole in a rootless container using podman</title>
+      <link>https://vashirov.blog/2021/10/08/running-pi-hole-in-a-rootless-container-using-podman/</link>
+      <pubDate>Fri, 08 Oct 2021 11:07:01 +0200</pubDate>
+      
+      <guid>https://vashirov.blog/2021/10/08/running-pi-hole-in-a-rootless-container-using-podman/</guid>
+      <description>Introduction Pi-hole is a network-wide advertisement and tracker blocker. It&amp;rsquo;s a DNS sinkhole for your home network. I&amp;rsquo;ve been running it for several years now on my Raspberry Pi 3. Recently my SD card died and I didn&amp;rsquo;t have a replacement at hand. So I decided to move Pi-hole to my fanless Intel NUC that I already use to host several services in my home network.
+Here&amp;rsquo;s my log of configuring it with all the problems that I encountered along the way.</description>
+    </item>
+    
     <item>
       <title>Installing Let’s Encrypt certificates in OpenShift</title>
       <link>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</link>
@@ -25,7 +35,7 @@ These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsq
       <guid>https://vashirov.blog/2021/04/10/how-to-enable-shell-auto-completion-for-openshift-oc-command/</guid>
       <description>I was pleasantly surprised to find out that oc (and kubectl too) has a built-in capability to generate shell auto completion.
 For Zsh add the following snippet to your ~/.zshrc:
-if [ $commands[oc] ]; then source &amp;lt;(oc completion zsh) fi For Bash add this to ~/.bashrc
+if [ $commands[oc] ]; then source &amp;lt;(oc completion zsh) fi For Bash add this to ~/.bashrc:
 if command -v oc &amp;amp;&amp;gt;/dev/null; then source &amp;lt;(oc completion bash) fi After opening a new shell:
 $ oc &amp;lt;TAB&amp;gt; adm describe logout replace annotate diff logs rollback api-resources edit new-app rollout api-versions ex new-build rsh apply exec new-project rsync attach explain observe run auth expose options scale autoscale extract patch secrets cancel-build get plugin serviceaccounts cluster-info help policy set completion idle port-forward start-build config image process status cp import-image project tag create kustomize projects version debug label proxy wait delete login registry whoami </description>
     </item>

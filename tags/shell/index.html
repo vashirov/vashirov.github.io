@@ -81,7 +81,7 @@
 <section class=entry-content>
 <p>I was pleasantly surprised to find out that oc (and kubectl too) has a built-in capability to generate shell auto completion.
 For Zsh add the following snippet to your ~/.zshrc:
-if [ $commands[oc] ]; then source &lt;(oc completion zsh) fi For Bash add this to ~/.bashrc
+if [ $commands[oc] ]; then source &lt;(oc completion zsh) fi For Bash add this to ~/.bashrc:
 if command -v oc &>/dev/null; then source &lt;(oc completion bash) fi After opening a new shell:
 $ oc &lt;TAB> adm describe logout replace annotate diff logs rollback api-resources edit new-app rollout api-versions ex new-build rsh apply exec new-project rsync attach explain observe run auth expose options scale autoscale extract patch secrets cancel-build get plugin serviceaccounts cluster-info help policy set completion idle port-forward start-build config image process status cp import-image project tag create kustomize projects version debug label proxy wait delete login registry whoami </p>
 </section>

@@ -2,13 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://vashirov.blog/tags/containers/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/tags/podman/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/posts/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/2021/10/08/running-pi-hole-in-a-rootless-container-using-podman/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/tags/systemd/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/tags/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
+    <loc>https://vashirov.blog/</loc>
+    <lastmod>2021-10-08T11:07:01+02:00</lastmod>
+  </url><url>
     <loc>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</loc>
     <lastmod>2021-10-04T16:11:53+02:00</lastmod>
   </url><url>
-    <loc>https://vashirov.blog/posts/</loc>
-    <lastmod>2021-10-04T16:11:53+02:00</lastmod>
-  </url><url>
-    <loc>https://vashirov.blog/</loc>
+    <loc>https://vashirov.blog/tags/openshift/</loc>
     <lastmod>2021-10-04T16:11:53+02:00</lastmod>
   </url><url>
     <loc>https://vashirov.blog/tags/bash/</loc>
@@ -17,13 +35,7 @@
     <loc>https://vashirov.blog/2021/04/10/how-to-enable-shell-auto-completion-for-openshift-oc-command/</loc>
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://vashirov.blog/tags/openshift/</loc>
-    <lastmod>2021-04-10T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://vashirov.blog/tags/shell/</loc>
-    <lastmod>2021-04-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://vashirov.blog/tags/</loc>
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://vashirov.blog/tags/til/</loc>
