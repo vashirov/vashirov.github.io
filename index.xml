@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Viktor&#39;s blog</title>
     <link>https://vashirov.blog/</link>
@@ -13,8 +13,59 @@
       <pubDate>Mon, 04 Oct 2021 16:11:53 +0200</pubDate>
       
       <guid>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</guid>
-      <description>Introduction At my homelab I deploy and destroy OpenShift clusters several times a day. One of the most annoying things for me is accessing OpenShift console when it doesn&amp;rsquo;t have proper certificates installed: browser warns about self-signed certificates and makes me do several clicks first in order to access the UI. And of course, in real-life deployments you have to use proper certificates to secure routes and API endpoints.
-These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsquo;s Encrypt or similar services.</description>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;At my homelab I deploy and destroy OpenShift clusters several times a day. One of the most annoying things for me is accessing OpenShift console when it doesn&amp;rsquo;t have proper certificates installed: browser warns about self-signed certificates and makes me do several clicks first in order to access the UI. And of course, in real-life deployments you have to use proper certificates to secure routes and API endpoints.&lt;/p&gt;
+&lt;p&gt;These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsquo;s Encrypt or similar services. In March 2018 Let&amp;rsquo;s Encrypt &lt;a href=&#34;https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579&#34;&gt;added&lt;/a&gt; support for wildcard certificates, that made it finally possible to use it for my OpenShift deployments. I use &lt;code&gt;acme.sh&lt;/code&gt; together with &lt;a href=&#34;https://github.com/acmesh-official/acme.sh/wiki/dnsapi&#34;&gt;DNS API&lt;/a&gt; for &lt;a href=&#34;https://letsencrypt.org/docs/challenge-types/&#34;&gt;DNS chanllenge&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;solution&#34;&gt;Solution&lt;/h1&gt;
+&lt;p&gt;Usually I have 2 different versions of clusters running at the same time: stable and development. So I need to request a wildcard certificate for my main domain plus for api and *.apps subdomains for both clusters:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ export DOMAIN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;my_domain.fqdn
+$ acme.sh --issue --dns dns_dreamhost &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;        -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;$DOMAIN&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;        -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*.$DOMAIN&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;        -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;api.stable.$DOMAIN&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;        -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;api.devel.$DOMAIN&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;        -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*.apps.stable.$DOMAIN&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;        -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*.apps.devel.$DOMAIN&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;installing-the-certificate&#34;&gt;Installing the certificate&lt;/h2&gt;
+&lt;p&gt;Once you sucessfully receive the certificate, it&amp;rsquo;s time to install it. There are 2 places where we need to introduce new certificates: ingress controller and API server.&lt;/p&gt;
+&lt;h3 id=&#34;ingress-controller&#34;&gt;Ingress controller&lt;/h3&gt;
+&lt;p&gt;Create a secret that contains full certificate chain and private key in the &lt;code&gt;openshift-ingress&lt;/code&gt; namespace:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ oc create secret tls letsencrypt-certs -n openshift-ingress &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --cert&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/.acme.sh/&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/fullchain.cer &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --key&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/.acme.sh/&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;.key &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --dry-run&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;client -o yaml | oc apply -f - 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then update the ingress controller to use the created secret:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ oc patch ingresscontroller default -n openshift-ingress-operator &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --type&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;merge --patch&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{&amp;#34;spec&amp;#34;: { &amp;#34;defaultCertificate&amp;#34;: { &amp;#34;name&amp;#34;: &amp;#34;letsencrypt-certs&amp;#34; }}}&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;api-server&#34;&gt;API server&lt;/h3&gt;
+&lt;p&gt;Same for the API server:
+Create a secret that contains full certificate chain and private key in the &lt;code&gt;openshift-config&lt;/code&gt; namespace:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ oc create secret tls letsencrypt-certs -n openshift-config &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --cert&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/.acme.sh/&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/fullchain.cer &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --key&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/.acme.sh/&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;.key &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    --dry-run&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;client -o yaml | oc apply -f - 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And update the API server with the new secret reference:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ export CLUSTER&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;stable
+$ oc patch apiserver cluster --type&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;merge &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    -p &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{&amp;#34;spec&amp;#34;:{&amp;#34;servingCerts&amp;#34;: {&amp;#34;namedCertificates&amp;#34;:  [{&amp;#34;names&amp;#34;: [&amp;#34;api.&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;CLUSTER&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;DOMAIN&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;],  &amp;#34;&lt;/span&gt;servingCertificate&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;: {&amp;#34;&lt;/span&gt;name&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;: &amp;#34;&lt;/span&gt;letsencrypt-certs&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;}}]}}}&amp;#39; 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It will take some time to rebuild the containers and deploy the pods, but once it&amp;rsquo;s done you would be able to connect to the cluster console without any warnings.&lt;/p&gt;
+&lt;h2 id=&#34;fixing-oc-client&#34;&gt;Fixing &lt;code&gt;oc&lt;/code&gt; client&lt;/h2&gt;
+&lt;p&gt;You might encounter one issue with the CLI tools if they use an old KUBECONFIG. If it references old CA data, you won&amp;rsquo;t be able to connect to the cluster:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ oc whoami
+Unable to connect to the server: x509: certificate signed by unknown authority
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The solution is to remove the old CA data from your KUBECONFIG:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ sed -i -e &amp;quot;s/\(certificate-authority-data:\).*//&amp;quot; $KUBECONFIG
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And after that connection succeeds:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ oc whoami
+system:admin
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;references&#34;&gt;References:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.openshift.com/container-platform/4.8/security/certificates/replacing-default-ingress-certificate.html&#34;&gt;https://docs.openshift.com/container-platform/4.8/security/certificates/replacing-default-ingress-certificate.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.openshift.com/container-platform/4.8/security/certificates/api-server.html&#34;&gt;https://docs.openshift.com/container-platform/4.8/security/certificates/api-server.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -23,11 +74,34 @@ These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsq
       <pubDate>Sat, 10 Apr 2021 00:00:00 +0000</pubDate>
       
       <guid>https://vashirov.blog/2021/04/10/how-to-enable-shell-auto-completion-for-openshift-oc-command/</guid>
-      <description>I was pleasantly surprised to find out that oc (and kubectl too) has a built-in capability to generate shell auto completion.
-For Zsh add the following snippet to your ~/.zshrc:
-if [ $commands[oc] ]; then source &amp;lt;(oc completion zsh) fi For Bash add this to ~/.bashrc:
-if command -v oc &amp;amp;&amp;gt;/dev/null; then source &amp;lt;(oc completion bash) fi After opening a new shell:
-$ oc &amp;lt;TAB&amp;gt; adm describe logout replace annotate diff logs rollback api-resources edit new-app rollout api-versions ex new-build rsh apply exec new-project rsync attach explain observe run auth expose options scale autoscale extract patch secrets cancel-build get plugin serviceaccounts cluster-info help policy set completion idle port-forward start-build config image process status cp import-image project tag create kustomize projects version debug label proxy wait delete login registry whoami </description>
+      <description>&lt;p&gt;I was pleasantly surprised to find out that &lt;code&gt;oc&lt;/code&gt; (and &lt;code&gt;kubectl&lt;/code&gt; too) has a built-in capability to generate shell auto completion.&lt;/p&gt;
+&lt;p&gt;For Zsh add the following snippet to your &lt;code&gt;~/.zshrc&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-zsh&#34; data-lang=&#34;zsh&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $commands&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;oc&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+    source &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;oc completion zsh&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For Bash add this to &lt;code&gt;~/.bashrc&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; command -v oc &amp;amp;&amp;gt;/dev/null; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+    source &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;oc completion bash&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After opening a new shell:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ oc &amp;lt;TAB&amp;gt;
+adm              describe         logout           replace        
+annotate         diff             logs             rollback       
+api-resources    edit             new-app          rollout        
+api-versions     ex               new-build        rsh            
+apply            exec             new-project      rsync          
+attach           explain          observe          run            
+auth             expose           options          scale          
+autoscale        extract          patch            secrets        
+cancel-build     get              plugin           serviceaccounts
+cluster-info     help             policy           set            
+completion       idle             port-forward     start-build    
+config           image            process          status         
+cp               import-image     project          tag            
+create           kustomize        projects         version        
+debug            label            proxy            wait           
+delete           login            registry         whoami         
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -36,10 +110,27 @@ $ oc &amp;lt;TAB&amp;gt; adm describe logout replace annotate diff logs rollback
       <pubDate>Thu, 01 Jan 1970 00:00:00 +0000</pubDate>
       
       <guid>https://vashirov.blog/1970/01/01/hello-world/</guid>
-      <description>👋 </description>
+      <description>&lt;h1 id=&#34;x1f44b&#34;&gt;👋&lt;/h1&gt;
+</description>
     </item>
     
+    <item>
+      <title>Archives</title>
+      <link>https://vashirov.blog/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://vashirov.blog/archives/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>Search</title>
+      <link>https://vashirov.blog/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://vashirov.blog/search/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
