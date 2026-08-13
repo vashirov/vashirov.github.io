@@ -4,27 +4,25 @@
     <title>Posts on Viktor&#39;s blog</title>
     <link>https://vashirov.blog/posts/</link>
     <description>Recent content in Posts on Viktor&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Oct 2021 16:11:53 +0200</lastBuildDate><atom:link href="https://vashirov.blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 Oct 2021 16:11:53 +0200</lastBuildDate>
+    <atom:link href="https://vashirov.blog/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Installing Let’s Encrypt certificates in OpenShift</title>
       <link>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</link>
       <pubDate>Mon, 04 Oct 2021 16:11:53 +0200</pubDate>
-      
       <guid>https://vashirov.blog/2021/10/04/installing-lets-encrypt-certificates-in-openshift/</guid>
-      <description>Introduction At my homelab I deploy and destroy OpenShift clusters several times a day. One of the most annoying things for me is accessing OpenShift console when it doesn&amp;rsquo;t have proper certificates installed: browser warns about self-signed certificates and makes me do several clicks first in order to access the UI. And of course, in real-life deployments you have to use proper certificates to secure routes and API endpoints.
-These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsquo;s Encrypt or similar services.</description>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;At my homelab I deploy and destroy OpenShift clusters several times a day. One of the most annoying things for me is accessing OpenShift console when it doesn&amp;rsquo;t have proper certificates installed: browser warns about self-signed certificates and makes me do several clicks first in order to access the UI. And of course, in real-life deployments you have to use proper certificates to secure routes and API endpoints.&lt;/p&gt;
+&lt;p&gt;These days it&amp;rsquo;s easy to obtain free TLS certificates using Let&amp;rsquo;s Encrypt or similar services. In March 2018 Let&amp;rsquo;s Encrypt &lt;a href=&#34;https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579&#34;&gt;added&lt;/a&gt; support for wildcard certificates, that made it finally possible to use it for my OpenShift deployments. I use &lt;code&gt;acme.sh&lt;/code&gt; together with &lt;a href=&#34;https://github.com/acmesh-official/acme.sh/wiki/dnsapi&#34;&gt;DNS API&lt;/a&gt; for &lt;a href=&#34;https://letsencrypt.org/docs/challenge-types/&#34;&gt;DNS challenge&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Hello World!</title>
       <link>https://vashirov.blog/1970/01/01/hello-world/</link>
       <pubDate>Thu, 01 Jan 1970 00:00:00 +0000</pubDate>
-      
       <guid>https://vashirov.blog/1970/01/01/hello-world/</guid>
-      <description>👋 </description>
+      <description>&lt;h1 id=&#34;x1f44b&#34;&gt;👋&lt;/h1&gt;</description>
     </item>
-    
   </channel>
 </rss>
