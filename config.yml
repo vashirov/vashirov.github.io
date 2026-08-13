@@ -1,5 +1,5 @@
 baseURL: "https://vashirov.blog/"
-languageCode: "en-us"
+locale: "en-us"
 title: "Viktor's blog"
 theme: "PaperMod"
 
